@@ -4,32 +4,23 @@ import { ref } from "vue";
 
 import { CSpinner } from "@coreui/vue/dist/esm/components/spinner/index.js";
 
-const TODOS = [];
+const todos = ref();
 
 const loading = ref(true);
 // data fetching
-const fetchData = async () => {
-  try {
-    const todosData = await getTodos();
-    TODOS.value = todosData;
-    loading.value = false;
-  } catch (error) {
-    console.error(error);
-  }
+const getTOdu = async () => {
+  todos.value = await getTodos();
+  console.log(todos.value);
+  loading.value = false;
 };
+getTOdu();
 
 // delete items
 const deleteid = async (id) => {
   const res = await deleteItem(id);
   console.log(res);
-  fetchData().then(() => {
-    console.log(TODOS);
-  });
+  await getTOdu();
 };
-
-fetchData().then(() => {
-  console.log(TODOS);
-});
 </script>
 
 <template>
@@ -56,8 +47,8 @@ fetchData().then(() => {
     <template v-if="!loading">
       <div class="overflow-x-auto h-[500px]">
         <div
-          v-for="(item, index) in TODOS.value"
-          :key="index"
+          v-for="(item, i) in todos"
+          :key="i"
           class="flex gap-3 flex-col w-full text-white"
         >
           <div
