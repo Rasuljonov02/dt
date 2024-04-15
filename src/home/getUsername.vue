@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center gap-3 p-2">
     <input
-      class="w-[250px] h-[40px]"
+      class="w-[250px] h-[40px] pl-1.5 pr-1.5"
       type="text"
       placeholder="Enter Instagram username"
       v-model="username"
@@ -17,25 +17,39 @@
   </div>
 
   <div class="w-full h-[885px] text-white" v-if="imgData">
-    <img :src="imgData?.profile_pic_url_hd" class="w-[250px]" alt="" />
+    <img
+      :src="imgData?.profile_pic_url_hd"
+      class="w-[150px] h-[150px]"
+      alt=""
+    />
 
-    <h1>{{ imgData?.username }}</h1>
-    <h2>{{ imgData?.full_name }}</h2>
-    <h2>{{ imgData?.following }}</h2>
-    <h2>{{ imgData?.followers }}</h2>
-    <h3>{{ imgData?.bio }}</h3>
+    <h1>username =>{{ imgData?.username }}</h1>
+    <h2>full_name =>{{ imgData?.full_name }}</h2>
+    <h2>following =>{{ imgData?.following }}</h2>
+    <h2>followers =>{{ imgData?.followers }}</h2>
+    <h3>bio =>{{ imgData?.bio }}</h3>
   </div>
 
-  <div v-else-if="username && !loading" class="text-gray-500 text-white">
+  <div v-else-if="username && !loading" class="text-white">
     Enter a valid Instagram username
   </div>
 </template>
 
 <script setup lang="ts">
+interface InstagramUserData {
+  profile_pic_url_hd: string;
+  username: string;
+  full_name: string;
+  followers: number;
+  following: number;
+  bio: string;
+}
+
 import { getUsername } from "../components/APi";
 import { ref, reactive } from "vue";
 
-const imgData = ref(null);
+const imgData = ref<InstagramUserData | null>(null);
+
 const username = ref("");
 const loading = ref(false);
 const error = ref("");
